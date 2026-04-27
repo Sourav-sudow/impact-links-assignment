@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Impact Links combines Stableford scores, monthly prize draws, and charity impact." />
+  <title>Impact Links | Charity Draw Platform</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home"><span class="brand-mark">IL</span><span><strong>Impact Links</strong><small>Play for purpose</small></span></a>
+    <nav><a href="#charities">Charities</a><a href="#draws">Draws</a><a href="#dashboard">Dashboard</a><a href="#admin">Admin</a></nav>
+    <div class="actions"><button id="resetDemoBtn" class="icon-button" title="Reset demo data">R</button><button id="loginBtn" class="ghost-button">Login</button><button id="subscribeBtn" class="primary-button">Subscribe</button></div>
+  </header>
+
+  <main>
+    <section id="home" class="hero-section">
+      <div class="hero-content">
+        <p class="eyebrow">Monthly draws. Real giving. Simple scores.</p>
+        <h1>Impact Links</h1>
+        <p>A modern subscription experience where players enter five Stableford scores, support a charity, and join monthly reward draws.</p>
+        <div class="hero-actions"><button id="heroSubscribeBtn" class="primary-button large">Start membership</button><button id="heroDemoBtn" class="secondary-button large">Use demo login</button></div>
+      </div>
+      <div class="hero-panel"><div><span>Prize pool</span><strong id="heroPrizePool">£0</strong></div><div><span>Charity pledged</span><strong id="heroCharityTotal">£0</strong></div><div><span>Next draw</span><strong id="heroNextDraw">--</strong></div></div>
+    </section>
+
+    <section class="impact-band"><article><span>01</span><h2>Subscribe</h2><p>Choose monthly or yearly access, then select a charity and contribution percentage.</p></article><article><span>02</span><h2>Enter scores</h2><p>Keep exactly five dated Stableford scores, with duplicate dates blocked automatically.</p></article><article><span>03</span><h2>Join draws</h2><p>Monthly 3, 4, and 5-match rewards are calculated from active subscriber participation.</p></article></section>
+
+    <section id="charities" class="page-section">
+      <div class="section-heading"><p class="eyebrow">Charity directory</p><h2>Lead with impact</h2><p>Search charities, review events, and direct at least 10% of membership fees to a cause.</p></div>
+      <div class="toolbar"><input id="charitySearch" type="search" placeholder="Search charities" /><select id="charityFilter"><option value="all">All causes</option><option value="health">Health</option><option value="youth">Youth</option><option value="community">Community</option></select></div>
+      <div id="charityGrid" class="charity-grid"></div>
+    </section>
+
+    <section id="draws" class="page-section">
+      <div class="section-heading"><p class="eyebrow">Draw mechanics</p><h2>Transparent reward engine</h2><p>Prize tiers are auto-calculated, simulations run before publishing, and unclaimed jackpots roll over.</p></div>
+      <div class="draw-layout"><div class="panel"><h3>Current split</h3><div class="split-row"><span>5-number jackpot</span><strong id="tier5">£0</strong></div><div class="split-row"><span>4-number tier</span><strong id="tier4">£0</strong></div><div class="split-row"><span>3-number tier</span><strong id="tier3">£0</strong></div></div><div class="panel"><h3>Latest result</h3><p id="latestNumbers" class="draw-numbers">-- -- -- -- --</p><p id="latestDrawMeta">No official draw published yet.</p></div></div>
+    </section>
+
+    <section id="dashboard" class="page-section">
+      <div class="section-heading compact"><p class="eyebrow">User panel</p><h2>Member dashboard</h2></div>
+      <div id="memberLoggedOut" class="empty-state"><h3>Login required</h3><p>Use demo subscriber account or create your own membership.</p><button class="primary-button" data-open-login>Login as member</button></div>
+      <div id="memberDashboard" class="dashboard-grid hidden">
+        <section class="panel"><div class="panel-title"><h3>Subscription</h3><span id="subscriptionStatus" class="status-pill">Inactive</span></div><div class="stats-grid"><div><span>Plan</span><strong id="memberPlan">--</strong></div><div><span>Renewal</span><strong id="memberRenewal">--</strong></div><div><span>Draws entered</span><strong id="memberDraws">0</strong></div><div><span>Total won</span><strong id="memberWon">£0</strong></div></div><div class="plan-buttons"><button class="secondary-button" data-plan="monthly">Monthly £12</button><button class="secondary-button" data-plan="yearly">Yearly £120</button><button id="cancelPlanBtn" class="ghost-button">Cancel</button></div><div id="memberInvoice" class="invoice-strip"></div></section>
+        <section class="panel"><div class="panel-title"><h3>Scores</h3><span class="status-pill neutral">Latest 5</span></div><form id="scoreForm" class="score-form"><input id="scoreDate" type="date" required><input id="scoreValue" type="number" min="1" max="45" placeholder="1-45" required><button class="primary-button">Save score</button></form><p id="scoreError" class="form-error"></p><div id="scoreList" class="activity-list"></div></section>
+        <section class="panel"><div class="panel-title"><h3>Charity</h3><span id="memberCharityPercent" class="status-pill neutral">10%</span></div><label>Selected charity</label><select id="memberCharity"></select><label>Contribution percentage</label><input id="memberCharityRange" type="range" min="10" max="50" step="5"><button id="saveCharityBtn" class="primary-button">Update giving</button><button id="donateBtn" class="secondary-button">Make independent donation</button></section>
+        <section class="panel"><div class="panel-title"><h3>Winner proof</h3><span id="proofStatus" class="status-pill">Pending</span></div><input id="proofUpload" type="file" accept="image/*,.pdf"><button id="uploadProofBtn" class="primary-button">Upload proof</button><div id="memberActivity" class="activity-list"></div></section>
+      </div>
+    </section>
+
+    <section id="admin" class="page-section">
+      <div class="section-heading compact"><p class="eyebrow">Admin panel</p><h2>Operations console</h2></div>
+      <div id="adminLoggedOut" class="empty-state"><h3>Admin access</h3><p>Login with demo admin account to manage users, charities, draws, winners, and reports.</p><button class="primary-button" data-open-login>Login as admin</button></div>
+      <div id="adminDashboard" class="admin-grid hidden">
+        <section class="panel wide"><div class="panel-title"><h3>Reports</h3><span class="status-pill neutral">Live demo data</span></div><div class="stats-grid reports"><div><span>Total users</span><strong id="adminUsers">0</strong></div><div><span>Active subscribers</span><strong id="adminActive">0</strong></div><div><span>Prize pool</span><strong id="adminPool">£0</strong></div><div><span>Charity total</span><strong id="adminCharity">£0</strong></div></div></section>
+        <section class="panel"><div class="panel-title"><h3>Draw control</h3><span id="drawModeLabel" class="status-pill neutral">Random</span></div><div class="segmented"><button class="active" data-draw-mode="random">Random</button><button data-draw-mode="weighted">Weighted</button></div><button id="simulateDrawBtn" class="secondary-button">Run simulation</button><button id="publishDrawBtn" class="primary-button">Publish result</button><div id="drawPreview" class="activity-list"></div></section>
+        <section class="panel"><div class="panel-title"><h3>Winners</h3><span class="status-pill neutral">Verification</span></div><div id="winnerList" class="activity-list"></div></section>
+        <section class="panel"><div class="panel-title"><h3>Draw history</h3><span class="status-pill neutral">Published</span></div><div id="drawHistory" class="activity-list"></div></section>
+        <section class="panel wide"><div class="panel-title"><h3>User management</h3><span class="status-pill neutral">Profiles and scores</span></div><div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Plan</th><th>Scores</th><th>Charity</th><th>Action</th></tr></thead><tbody id="adminUserRows"></tbody></table></div></section>
+        <section class="panel wide"><div class="panel-title"><h3>Charity management</h3><span class="status-pill neutral">Content</span></div><form id="charityForm" class="charity-form"><input id="newCharityName" placeholder="Charity name" required><input id="newCharityCause" placeholder="Cause category" required><input id="newCharityEvent" placeholder="Upcoming event" required><button class="primary-button">Add charity</button></form><div id="adminCharities" class="activity-list"></div></section>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="authDialog"><form method="dialog" class="modal"><div class="panel-title"><h3>Access Impact Links</h3><button class="icon-button" value="close">X</button></div><label>Email</label><input id="authEmail" type="email" value="member@impactlinks.test"><label>Password</label><input id="authPassword" type="password" value="member123"><p id="authError" class="form-error"></p><div class="modal-actions"><button id="authSubmit" type="button" class="primary-button">Login</button><button id="createAccountBtn" type="button" class="secondary-button">Create subscriber</button></div><div class="demo-logins"><button type="button" data-demo-login="member">Member demo</button><button type="button" data-demo-login="admin">Admin demo</button></div></form></dialog>
+  <dialog id="checkoutDialog"><form method="dialog" class="modal"><div class="panel-title"><h3>Checkout</h3><button class="icon-button" value="close">X</button></div><div class="checkout-summary"><div><span>Plan</span><strong id="checkoutPlan">Monthly</strong></div><div><span>Subscription</span><strong id="checkoutPrice">£12</strong></div><div><span>Charity</span><strong id="checkoutCharity">£1</strong></div><div><span>Prize pool</span><strong id="checkoutPool">£4</strong></div></div><label>Card number</label><input id="cardNumber" value="4242 4242 4242 4242"><p id="checkoutError" class="form-error"></p><button id="confirmCheckoutBtn" type="button" class="primary-button full-width">Confirm subscription</button></form></dialog>
+  <dialog id="userEditDialog"><form method="dialog" class="modal"><div class="panel-title"><h3>Edit subscriber</h3><button class="icon-button" value="close">X</button></div><input id="editUserId" type="hidden"><label>Name</label><input id="editUserName"><label>Status</label><select id="editUserStatus"><option value="active">Active</option><option value="inactive">Inactive</option><option value="cancelled">Cancelled</option><option value="lapsed">Lapsed</option></select><label>Plan</label><select id="editUserPlan"><option value="monthly">Monthly</option><option value="yearly">Yearly</option></select><div class="two-col"><label>Latest score date<input id="editUserScoreDate" type="date"></label><label>Score<input id="editUserScoreValue" type="number" min="1" max="45"></label></div><p id="editUserError" class="form-error"></p><button id="saveUserEditBtn" type="button" class="primary-button full-width">Save subscriber</button></form></dialog>
+  <dialog id="charityEditDialog"><form method="dialog" class="modal"><div class="panel-title"><h3>Edit charity</h3><button class="icon-button" value="close">X</button></div><input id="editCharityId" type="hidden"><label>Name</label><input id="editCharityName"><label>Cause</label><input id="editCharityCause"><label>Upcoming event</label><input id="editCharityEvent"><label>Description</label><textarea id="editCharityDescription"></textarea><button id="saveCharityEditBtn" type="button" class="primary-button full-width">Save charity</button></form></dialog>
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
