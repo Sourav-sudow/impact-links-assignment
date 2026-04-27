@@ -1,0 +1,13 @@
+{
+  "name": "impact-links-assignment",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Full-stack training assignment demo for subscription, scores, charity, draws, and admin workflows.",
+  "scripts": {
+    "start": "node server.js",
+    "serve": "node server.js"
+  },
+  "keywords": ["assignment", "subscription", "charity", "draw-engine"],
+  "author": "Sourav",
+  "license": "UNLICENSED"
+}
