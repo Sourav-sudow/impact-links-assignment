@@ -15,6 +15,13 @@ Open `http://127.0.0.1:5173`.
 - Subscriber: `member@impactlinks.test` / `member123`
 - Admin: `admin@impactlinks.test` / `admin123`
 
+## Auth and backend status
+
+- Login and signup are fully functional in demo mode.
+- New subscriber accounts are saved in browser `localStorage`, so they persist for the same browser until demo data is reset.
+- The Supabase database schema is included and has been designed for production migration, but the current static deployment does not send auth or dashboard data to Supabase yet.
+- The app opens logged out on page load so reviewers always start from the public experience.
+
 ## Feature coverage
 
 - Public homepage with charity-led positioning and responsive UI.

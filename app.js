@@ -109,6 +109,7 @@ let state = loadState();
 let editingScoreDate = null;
 let lastSimulation = null;
 let checkoutPlan = "monthly";
+let authMode = "login";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => Array.from(document.querySelectorAll(selector));
@@ -120,10 +121,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function bindEvents() {
   $("#loginBtn").addEventListener("click", openAuth);
-  $("#heroSubscribeBtn").addEventListener("click", openAuth);
+  $("#heroSubscribeBtn").addEventListener("click", openSignup);
   $("#heroDemoBtn").addEventListener("click", () => loginDemo("member"));
   $("#resetDemoBtn").addEventListener("click", resetDemo);
   $$("[data-open-login]").forEach((button) => button.addEventListener("click", openAuth));
+  $$("[data-auth-mode]").forEach((button) => button.addEventListener("click", () => setAuthMode(button.dataset.authMode)));
   $$("[data-demo-login]").forEach((button) => button.addEventListener("click", () => loginDemo(button.dataset.demoLogin)));
   $("#authSubmit").addEventListener("click", login);
   $("#createAccountBtn").addEventListener("click", createAccount);
@@ -151,7 +153,9 @@ function loadState() {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (!stored) return structuredClone(demoData);
   try {
-    return normalizeState(JSON.parse(stored));
+    const savedState = normalizeState(JSON.parse(stored));
+    savedState.currentUserId = null;
+    return savedState;
   } catch {
     return structuredClone(demoData);
   }
@@ -241,7 +245,7 @@ function renderAuth() {
         toast("Logged out");
         render();
       }
-    : openAuth;
+    : openSignup;
 }
 
 function renderHeroStats() {
@@ -428,7 +432,27 @@ function renderDrawHistory() {
 }
 
 function openAuth() {
+  setAuthMode("login");
   $("#authDialog").showModal();
+}
+
+function openSignup() {
+  $("#authDialog").showModal();
+  setAuthMode("signup");
+}
+
+function setAuthMode(mode) {
+  authMode = mode;
+  $$("[data-auth-mode]").forEach((button) => button.classList.toggle("active", button.dataset.authMode === mode));
+  $$(".signup-only").forEach((element) => element.classList.toggle("hidden", mode !== "signup"));
+  $("#authSubmit").textContent = mode === "signup" ? "Create account" : "Login";
+  $("#createAccountBtn").classList.toggle("hidden", mode === "signup");
+  $("#authError").textContent = "";
+  if (mode === "signup") {
+    $("#authEmail").value = "";
+    $("#authPassword").value = "";
+    $("#authName").focus();
+  }
 }
 
 function loginDemo(type) {
@@ -442,6 +466,10 @@ function loginDemo(type) {
 }
 
 function login() {
+  if (authMode === "signup") {
+    createAccount();
+    return;
+  }
   const email = $("#authEmail").value.trim().toLowerCase();
   const password = $("#authPassword").value;
   const user = state.users.find((item) => item.email.toLowerCase() === email && item.password === password);
@@ -460,8 +488,14 @@ function login() {
 
 function createAccount() {
   const email = $("#authEmail").value.trim().toLowerCase();
+  const password = $("#authPassword").value;
+  const name = $("#authName").value.trim() || email.split("@")[0].replace(/[._-]/g, " ");
   if (!email.includes("@")) {
     $("#authError").textContent = "Enter a valid email.";
+    return;
+  }
+  if (password.length < 6) {
+    $("#authError").textContent = "Password must be at least 6 characters.";
     return;
   }
   if (state.users.some((user) => user.email.toLowerCase() === email)) {
@@ -472,9 +506,9 @@ function createAccount() {
   state.users.push({
     id,
     role: "subscriber",
-    name: email.split("@")[0].replace(/[._-]/g, " "),
+    name,
     email,
-    password: $("#authPassword").value || "member123",
+    password,
     plan: "monthly",
     subscriptionStatus: "active",
     renewalDate: addDays(new Date(), 30),

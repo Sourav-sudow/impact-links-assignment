@@ -292,6 +292,12 @@
           <h3>Access Impact Links</h3>
           <button class="icon-button" value="close" aria-label="Close dialog" type="submit">X</button>
         </div>
+        <div class="segmented auth-tabs" role="group" aria-label="Authentication mode">
+          <button class="active" id="loginTabBtn" type="button" data-auth-mode="login">Login</button>
+          <button id="signupTabBtn" type="button" data-auth-mode="signup">Sign up</button>
+        </div>
+        <label class="field-label signup-only hidden">Full name</label>
+        <input class="signup-only hidden" id="authName" type="text" placeholder="Your name" />
         <label class="field-label">Email</label>
         <input id="authEmail" type="email" value="member@impactlinks.test" />
         <label class="field-label">Password</label>

@@ -618,6 +618,10 @@ input[type="range"] {
   background: var(--teal);
 }
 
+.auth-tabs {
+  margin: 14px 0 4px;
+}
+
 .table-wrap {
   overflow-x: auto;
 }
