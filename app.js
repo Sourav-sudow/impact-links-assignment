@@ -128,7 +128,13 @@ function bindEvents() {
   $$("[data-auth-mode]").forEach((button) => button.addEventListener("click", () => setAuthMode(button.dataset.authMode)));
   $$("[data-demo-login]").forEach((button) => button.addEventListener("click", () => loginDemo(button.dataset.demoLogin)));
   $("#authSubmit").addEventListener("click", login);
-  $("#createAccountBtn").addEventListener("click", createAccount);
+  $("#createAccountBtn").addEventListener("click", () => {
+    if (authMode === "login") {
+      setAuthMode("signup");
+      return;
+    }
+    createAccount();
+  });
   $("#charitySearch").addEventListener("input", renderCharities);
   $("#charityFilter").addEventListener("change", renderCharities);
   $("#scoreForm").addEventListener("submit", saveScore);
